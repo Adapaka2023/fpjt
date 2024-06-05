@@ -177,6 +177,10 @@ data "aws_security_group" "selected" {
       env = "dev"
     }
 
+    tags = {
+		  Name = "worker-node"
+	  }
+
     scaling_config {
       desired_size = 2
       max_size     = 4
