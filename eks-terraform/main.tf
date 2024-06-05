@@ -143,7 +143,7 @@ data "aws_security_group" "selected" {
  #Creating EKS Cluster
   resource "aws_eks_cluster" "eks" {
     name     = "project-eks"
-    role_arn = aws_iam_role.master.arn
+    role_arn = "arn:aws:iam::590183959696:role/admin-role"
 
     vpc_config {
       subnet_ids = [data.aws_subnet.subnet-1.id, data.aws_subnet.subnet-2.id]
@@ -152,17 +152,11 @@ data "aws_security_group" "selected" {
     tags = {
       "Name" = "MyEKS"
     }
-
-    depends_on = [
-      aws_iam_role_policy_attachment.AmazonEKSClusterPolicy,
-      aws_iam_role_policy_attachment.AmazonEKSServicePolicy,
-      aws_iam_role_policy_attachment.AmazonEKSVPCResourceController,
-    ]
   }
  resource "aws_eks_node_group" "node-grp" {
     cluster_name    = aws_eks_cluster.eks.name
     node_group_name = "project-node-group"
-    node_role_arn   = aws_iam_role.worker.arn
+    node_role_arn   = "arn:aws:iam::590183959696:role/admin-role"
     subnet_ids      = [data.aws_subnet.subnet-1.id, data.aws_subnet.subnet-2.id]
     capacity_type   = "ON_DEMAND"
     disk_size       = 20
@@ -186,10 +180,4 @@ data "aws_security_group" "selected" {
     update_config {
       max_unavailable = 1
     }
-
-    depends_on = [
-      aws_iam_role_policy_attachment.AmazonEKSWorkerNodePolicy,
-      aws_iam_role_policy_attachment.AmazonEKS_CNI_Policy,
-      aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
-    ]
   }
