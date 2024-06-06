@@ -1,0 +1,42 @@
+terraform code:
+s3 bucket name create :cloudcore007p1
+
+jenkins pipeline:
+
+create : Jumphost-vpc
+create : subnet-1=MyPublicSubnet01     - in Jumphost-vpc
+         subnet-2=MyPublicSubnet02   - in Jumphost-vpc
+create : sg=devops-project-veera   - in Jumphost-vpc
+create routetable: map MyPublicSubnet01 and  MyPublicSubnet02
+
+change s3 bucket name in backendfile: cloudcore007p1
+change keypairname: account2 or create new one with "provisioner"
+
+change instance type:  instance_types  = ["t2.small"] to t2.medium
+
+aws eks update-kubeconfig --region ap-south-1 --name project-eks
+
+
+ sudo chmod 777 /var/run/docker.sock
+docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
+changed pwd to admin123
+
+sonar token: squ_d81aea331e4ce2ccd10413ec8485348266c06d8d
+
+
+sonar-scanner \
+  -Dsonar.projectKey=three-tier-frontend \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=http://13.126.159.216:9000 \
+  -Dsonar.login=squ_d81aea331e4ce2ccd10413ec8485348266c06d8d
+  
+sonar-scanner \
+  -Dsonar.projectKey=three-tier-backend \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=http://13.126.159.216:9000 \
+  -Dsonar.login=squ_d81aea331e4ce2ccd10413ec8485348266c06d8d
+  
+  git token : xxxxx
+  account id: 590xxxx3959696
+  
+  aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 590183959696.dkr.ecr.ap-south-1.amazonaws.com
